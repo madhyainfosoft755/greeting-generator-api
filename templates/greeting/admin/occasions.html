@@ -1,0 +1,77 @@
+
+{% extends '../../base.html' %}
+{%  load static %}
+{% block page_content %}
+
+
+      <div class="row">
+        <div class="col-lg-8">
+            <h1>Occasions</h1>
+
+             <!-- Form to add a new festival -->
+            <div class="mb-4">
+                <!-- Display Success Message -->
+                {% if messages %}
+                    <div class="alert alert-success">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form method="post" style="max-width: 400px;">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Add Occasion</button>
+                </form>
+            </div>
+
+
+             <!-- Table to display festivals -->
+            <div class="table-responsive" style="max-width: 800px; margin: 0 auto;">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>  <!-- Column header for the festival name -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop through all the festivals -->
+                        {% for festival in festivals %}
+                        <tr>
+                            <td>{{ festival.name }}</td>  <!-- Display the name of each festival -->
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="1">No occasions found.</td>  <!-- Display if there are no festivals -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                
+            </div>
+        </div>
+    </div>
+
+  
+{% endblock %}
+
+
+
+{% block js_includes %}
+
+<!--   Core JS Files   -->
+<script>
+  var win = navigator.platform.indexOf('Win') > -1;
+  if (win && document.querySelector('#sidenav-scrollbar')) {
+    var options = {
+      damping: '0.5'
+    }
+    Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+  }
+</script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
+{% endblock %}

@@ -1,0 +1,207 @@
+
+{% extends '../../base.html' %}
+{%  load static %}
+{% block page_content %}
+
+
+      <div class="row">
+        <div class="col-lg-8">
+            <h1>Create Greeting</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+            <!-- Form starts here -->
+            <form method="POST" id="generateGreetingForm">
+                <!-- CSRF Token (if using Django) -->
+                {% csrf_token %}
+
+                <!-- Client Dropdown -->
+                <div class="form-group">
+                    <label for="client">Client</label>
+                    <select class="form-control" id="client" name="client_id">
+                        <option value="">Select Client</option>
+                        <!-- Example options (use dynamic values here in Django) -->
+                        {% for client in clients %}
+                            <option value="{{ client.id }}">{{ client.name }}</option>
+                        {% empty %}
+                            <option value="">No clients available</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Occasion Dropdown -->
+                <div class="form-group">
+                    <label for="occasion">Occasion</label>
+                    <select class="form-control" id="occasion" name="occasion_id">
+                        <option value="">Select Occasion</option>
+                        <!-- Example options (use dynamic values here in Django) -->
+                        {% for festival in festivals %}
+                            <option value="{{ festival.id }}">{{ festival.name }}</option>
+                        {% empty %}
+                            <option value="">No occasions available</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+      </div>
+
+      <div class="container mt-5 d-none" id="templates"> 
+        <div class="row justify-content-center">
+          
+          <!-- Div 1 -->
+            <div class="col-md-4 mb-4">
+                <div id="t-1">
+                    <div class="form-container" style="height: 500px; width: 500px; border: 1px solid #ccc; padding: 20px; background: linear-gradient(to right, #ff7e5f, #feb47b);">
+                    <h3 class="text-center">#Client Name#</h3>
+                    <div class="form-group">
+                        <label for="name">#Client Website Name#</label>
+                        <input type="text" id="name" name="client_id" class="form-control" placeholder="Enter client name" value="{{ form.name.value }}">
+                    </div>
+                    </div>
+                </div>
+                <div>
+                    <button onclick="downloadDiv(this)">Download</button>
+                    <button>Save&Download</button>
+                </div>
+            </div>
+        
+            <!-- Div 2 -->
+            <div class="col-md-4 mb-4">
+                <div id="t-2">
+                    <div class="form-container" style="height: 500px; width: 500px; border: 1px solid #ccc; padding: 20px; background: linear-gradient(to right, #6a11cb, #2575fc);">
+                        <h3 class="text-center">#Client Name#</h3>
+                        <div class="form-group">
+                            <label for="logo">Upload Logo</label>
+                            <input type="file" id="logo" name="logo" class="form-control" placeholder="Choose client logo">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button onclick="downloadDiv(this)">Download</button>
+                    <button>Save&Download</button>
+                </div>
+            </div>
+        
+        </div>
+      </div>
+      
+
+  
+{% endblock %}
+
+
+
+{% block js_includes %}
+
+<!--   Core JS Files   -->
+<script>
+  var win = navigator.platform.indexOf('Win') > -1;
+  if (win && document.querySelector('#sidenav-scrollbar')) {
+    var options = {
+      damping: '0.5'
+    }
+    Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+  }
+</script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script> -->
+
+<!--  -->
+<!-- <script>
+    // Pass the clients and festivals data to JavaScript
+    var clients = JSON.parse('{{ clients_json|escapejs }}');
+    var festivals = JSON.parse('{{ festivals_json|escapejs }}');
+    var selectedClientObj = null;
+    var selectedFestivalObj = null;
+    var templates = document.getElementById('templates');
+
+    // Log the data to the browser's console
+    console.log("Clients:", clients);
+    console.log("Festivals:", festivals);
+
+    document.getElementById('generateGreetingForm').addEventListener('submit', function(event) {
+        event.preventDefault();  // Prevent the default form submission
+
+        // Get selected values from the dropdowns
+        var selectedClient = document.getElementById('client').value;
+        var selectedFestival = document.getElementById('occasion').value;
+
+        // Log the selected values to the console
+        console.log("Selected Client ID: ", selectedClient);
+        console.log("Selected Festival ID: ", selectedFestival);
+
+        selectedClientObj = clients.filter(val => val.pk == selectedClient)[0];
+        selectedFestivalObj = festivals.filter(val => val.pk == selectedFestival)[0];
+
+        // Log the selected values to the console
+        console.log("Selected Client ID: ", selectedClientObj);
+        console.log("Selected Festival ID: ", selectedFestivalObj);
+
+
+        // // Replace 'Client Name' with 'ABC' in the entire document
+        replaceTextInDocument("#Client Name#", selectedClientObj.fields.name);
+        replaceTextInDocument("#Client Website Name#", selectedClientObj.fields.website);
+
+
+        // Optionally, you can handle the data here (e.g., send it via AJAX, etc.)
+
+        templates.classList.toggle('d-none');
+    });
+
+    function replaceTextInDocument(oldText, newText) {
+                        // Get all elements in the document
+                        const elements = document.querySelectorAll("*");
+
+                        elements.forEach(element => {
+                            // Iterate through each child node of each element
+                            element.childNodes.forEach(node => {
+                                if (node.nodeType === Node.TEXT_NODE) { // Only process text nodes
+                                    node.textContent = node.textContent.replace(new RegExp(oldText, 'g'), newText);
+                                }
+                            });
+                        });
+                    }
+
+
+    function downloadDiv(button) {
+        // Traverse up the DOM to find the parent containing the target div
+        let parentDiv = button.parentElement.parentElement;
+
+        // Find the div with an ID starting with "t-"
+        let targetDiv = Array.from(parentDiv.querySelectorAll("div")).find(div => div.id && div.id.startsWith("t-"));
+
+        if (targetDiv) {
+            // Use html2canvas to capture the targetDiv
+            html2canvas(targetDiv).then(function (canvas) {
+                // Create a download link and set the PNG as the source
+                var link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");
+                link.download = "client_info.png";
+
+                // Trigger the download
+                link.click();
+            });
+        } else {
+            console.error("Div with ID starting with 't-' not found.");
+        }
+    }
+
+    function saveAndDownload(button) {
+        // Any additional actions for saving, then download
+        downloadDiv(button);
+    }
+</script>
+
+ -->
+
+{% endblock %}

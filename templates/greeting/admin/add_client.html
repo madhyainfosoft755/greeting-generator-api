@@ -1,0 +1,36 @@
+{% extends '../../base.html' %}
+{% load static %}
+{% block page_content %}
+
+<div class="row">
+    <div class="col-lg-8">
+        <h1>Add New Client</h1>
+
+        <!-- Display success message if the client was added successfully -->
+        {% if messages %}
+            <div class="alert alert-success">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Form to add a new client -->
+        <form method="post" enctype="multipart/form-data" style="max-width: 600px;">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- Display the form fields -->
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            <li>{{ field }}: {{ errors|join:", " }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary">Add Client</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

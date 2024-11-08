@@ -1,0 +1,78 @@
+
+{% extends '../../base.html' %}
+{%  load static %}
+{% block page_content %}
+
+
+      <div class="row">
+        <div class="col-lg-8">
+            <h1>Clients</h1>
+            <a href="{% url 'add-client' %}">Add Client</a>
+             <!-- Table to Display Client Data -->
+              <table class="table table-bordered table-hover mt-4">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Logo</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Website</th>
+                    <th>Tagline</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                <tr>
+                    <td>{{ client.name }}</td>
+                    <td>
+                        {% if client.logo %}
+                            <img src="{{ client.logo.url }}" alt="{{ client.name }}" width="50">
+                        {% else %}
+                            No logo
+                        {% endif %}
+                    </td>
+                    <td>{{ client.email }}</td>
+                    <td>{{ client.contact }}</td>
+                    <td>
+                        {% if client.website %}
+                            <a href="{{ client.website }}" target="_blank">{{ client.website }}</a>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>{{ client.tagline }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No clients available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+            
+            
+        </div>
+      </div>
+
+  
+{% endblock %}
+
+
+
+{% block js_includes %}
+
+<!--   Core JS Files   -->
+<script>
+  var win = navigator.platform.indexOf('Win') > -1;
+  if (win && document.querySelector('#sidenav-scrollbar')) {
+    var options = {
+      damping: '0.5'
+    }
+    Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+  }
+</script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
+{% endblock %}

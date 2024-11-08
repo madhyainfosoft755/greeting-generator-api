@@ -3,7 +3,7 @@ from django.db import models
 # 1. Client Model
 class Client(models.Model):
     name = models.CharField(max_length=255)
-    logo = models.ImageField(upload_to='client_logos/') # Image field for logo
+    logo = models.ImageField(upload_to='static/client_logos/') # Image field for logo
     email = models.EmailField(unique=True)
     contact = models.CharField(max_length=15) # Assuming phone numbers as strings
     website = models.URLField(blank=True, null=True)
@@ -21,7 +21,7 @@ class Festival(models.Model):
 
 # 3. Template Model
 class Template(models.Model):
-    greeting_cards = models.ImageField(upload_to='greeting_cards/')  
+    greeting_cards = models.ImageField(upload_to='static/greeting_cards/')  
     festival = models.ForeignKey(Festival, on_delete=models.CASCADE)  # Linking Template to Festival
     #client = models.ForeignKey(Client, on_delete=models.CASCADE)  # Linking Template to Festival
 
