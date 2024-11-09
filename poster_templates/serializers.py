@@ -14,7 +14,7 @@ class FestivalSerializer(serializers.ModelSerializer):
 class TemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Template
-        fields = ['greeting_cards', 'festival']  # Manually list fields you want to include
+        fields = '__all__'  # Manually list fields you want to include
 
 class QuotationSerializer(serializers.ModelSerializer):
     class Meta:

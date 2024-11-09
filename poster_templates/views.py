@@ -55,7 +55,7 @@ class FestivalViewSet(viewsets.ModelViewSet):
 class GreetingViewSet(viewsets.ModelViewSet):
     queryset = Template.objects.all()
     serializer_class = TemplateSerializer
-    permission_classes = [permissions.IsAuthenticated]  # Users and admin both can read and create
+    # permission_classes = [permissions.IsAuthenticated]  # Users and admin both can read and create
 
     def perform_create(self, serializer):
         # Both users and admins can create greetings

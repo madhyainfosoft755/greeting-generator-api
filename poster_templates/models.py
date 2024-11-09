@@ -23,7 +23,7 @@ class Festival(models.Model):
 class Template(models.Model):
     greeting_cards = models.ImageField(upload_to='static/greeting_cards/')  
     festival = models.ForeignKey(Festival, on_delete=models.CASCADE)  # Linking Template to Festival
-    #client = models.ForeignKey(Client, on_delete=models.CASCADE)  # Linking Template to Festival
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)  # Linking Template to Festival
 
     def __str__(self):
         return f"Template for {self.festival.name}"
