@@ -46,7 +46,6 @@ parts/
 sdist/
 var/
 myenv/
-static/
 media/
 *.egg-info/
 .installed.cfg
